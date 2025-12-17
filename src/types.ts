@@ -1,4 +1,11 @@
-import type { Contact } from './contact';
+export type Contact = {
+  wa_id: number;
+  created_at: string | null;
+  last_message_at: string | null;
+  profile_name: string | null;
+  is_current?: boolean;
+  in_chat: boolean;
+};
 
 export type WebhookImage = {
   id: string;
@@ -10,9 +17,14 @@ export type WebhookMessage = {
   from: string;
   id: string;
   timestamp: string;
-  image?: WebhookImage;
-  type: 'text' | 'reaction' | 'image';
-};
+} & (
+  | { type: 'image'; image: WebhookImage }
+  | { type: 'reaction'; reaction: string }
+  | {
+      type: 'text';
+      text: { body: string };
+    }
+);
 
 export type WebHookRequest = {
   object: 'whatsapp_business_account';
@@ -21,6 +33,7 @@ export type WebHookRequest = {
       id: string;
       changes: [
         {
+          field: string;
           value: {
             metadata: {
               display_phone_number: string;
@@ -29,7 +42,6 @@ export type WebHookRequest = {
             contacts: Array<Contact>;
             messages: Array<WebhookMessage>;
           };
-          field: string;
         },
       ];
     },

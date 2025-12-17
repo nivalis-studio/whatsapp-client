@@ -1,9 +1,9 @@
-export type { Contact } from './types/contact';
 export type {
+  Contact,
   WebHookRequest,
   WebhookImage,
   WebhookMessage,
-} from './types/webhook';
+} from './types';
 
 const WHATSAPP_API_URL = 'https://graph.facebook.com/v24.0';
 
