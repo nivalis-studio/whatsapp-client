@@ -24,6 +24,16 @@ export type WebhookMessage = {
       type: 'text';
       text: { body: string };
     }
+  | {
+      type: 'audio';
+      audio: {
+        mime_type: string;
+        sha256: string;
+        id: string;
+        url: string;
+        voice: boolean;
+      };
+    }
 );
 
 export type WebHookRequest = {
