@@ -16,7 +16,7 @@ export type WhatsAppClientConfig = {
    * Defaults to the official Facebook Graph API URL.
    * @default 'https://graph.facebook.com/v24.0'
    */
-  apiUrl: string;
+  apiUrl?: string | undefined | null;
 };
 
 export class WhatsAppClient {
