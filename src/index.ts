@@ -1,22 +1,38 @@
-const WHATSAPP_API_URL = 'https://graph.facebook.com/v21.0';
+export type { Contact } from './types/contact';
+export type {
+  WebHookRequest,
+  WebhookImage,
+  WebhookMessage,
+} from './types/webhook';
+
+const WHATSAPP_API_URL = 'https://graph.facebook.com/v24.0';
 
 export type WhatsAppClientConfig = {
   phoneNumberId: string;
   accessToken: string;
+
+  /*
+   * The base URL for the WhatsApp API.
+   * Defaults to the official Facebook Graph API URL.
+   * @default 'https://graph.facebook.com/v24.0'
+   */
+  apiUrl: string;
 };
 
 export class WhatsAppClient {
   private readonly phoneNumberId: string;
   private readonly accessToken: string;
+  private readonly apiUrl: string = WHATSAPP_API_URL;
 
   constructor(config: WhatsAppClientConfig) {
     this.phoneNumberId = config.phoneNumberId;
     this.accessToken = config.accessToken;
+    this.apiUrl = config.apiUrl || WHATSAPP_API_URL;
   }
 
   private async request(endpoint: string, body: unknown) {
     const response = await fetch(
-      `${WHATSAPP_API_URL}/${this.phoneNumberId}${endpoint}`,
+      `${this.apiUrl}/${this.phoneNumberId}${endpoint}`,
       {
         method: 'POST',
         headers: {
@@ -160,7 +176,7 @@ export class WhatsAppClient {
    * Get media URL from media ID
    */
   async getMediaUrl(mediaId: string): Promise<string> {
-    const response = await fetch(`${WHATSAPP_API_URL}/${mediaId}`, {
+    const response = await fetch(`${this.apiUrl}/${mediaId}`, {
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
       },
